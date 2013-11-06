@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarroRobo.Domain", "CarroRobo.Domain\CarroRobo.Domain.csproj", "{1AA937A7-CF9B-4CFD-8973-D51150B5D991}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Shared", "UI.Shared\UI.Shared.csproj", "{FD13E3EC-0978-414C-9ACA-8EED6617124E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarroRobo.TestAPI", "CarroRobo.TestAPI\CarroRobo.TestAPI.csproj", "{50BD61A4-08DC-40AF-B6F9-B5739C490DDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1AA937A7-CF9B-4CFD-8973-D51150B5D991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AA937A7-CF9B-4CFD-8973-D51150B5D991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AA937A7-CF9B-4CFD-8973-D51150B5D991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AA937A7-CF9B-4CFD-8973-D51150B5D991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD13E3EC-0978-414C-9ACA-8EED6617124E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD13E3EC-0978-414C-9ACA-8EED6617124E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD13E3EC-0978-414C-9ACA-8EED6617124E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD13E3EC-0978-414C-9ACA-8EED6617124E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50BD61A4-08DC-40AF-B6F9-B5739C490DDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50BD61A4-08DC-40AF-B6F9-B5739C490DDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50BD61A4-08DC-40AF-B6F9-B5739C490DDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50BD61A4-08DC-40AF-B6F9-B5739C490DDC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
