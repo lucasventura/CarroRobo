@@ -1,0 +1,49 @@
+﻿<Window x:Class="CarroRobo.UI.RemoteControl.View.SelecionarDispositivoView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:extToolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit.Extended"
+        Title="SelecionarDispositivo" WindowStartupLocation="CenterScreen" Style="{StaticResource ResourceKey=janela-dialogo-normal-resize}">
+    <extToolkit:BusyIndicator BusyContent="{Binding StatusProcessamento}" IsBusy="{Binding Processando}" >
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="30">Selecione o Controle:</TextBlock>
+                <ComboBox ItemsSource="{Binding Dispositivos}" SelectedItem="{Binding DispositivoSelecionado}" Width="300" Height="30"></ComboBox>
+                <Button Command="{Binding ConectarCommand}" IsDefault="True" Width="300" Height="30">Conectar</Button>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Height="30">X:</TextBlock>
+                    <TextBox Height="30" Width="100" Text="{Binding State.X, Mode=OneWay}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Height="30">Y:</TextBlock>
+                    <TextBox Height="30" Width="100" Text="{Binding State.Y, Mode=OneWay}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Height="30">Z:</TextBlock>
+                    <TextBox Height="30" Width="100" Text="{Binding State.Z, Mode=OneWay}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Height="30">RZ:</TextBlock>
+                    <TextBox Height="30" Width="100" Text="{Binding State.Rz, Mode=OneWay}"></TextBox>
+                </StackPanel>
+                <Button Command="{Binding PararCommand}" IsDefault="True" Width="100" Height="30">Parar Motores</Button>
+
+                <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
+                    <TextBlock Height="30">Sinal:</TextBlock>
+                    <TextBox Height="30" Width="100" Text="{Binding Sinal}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Height="30">E:</TextBlock>
+                        <TextBox Height="30" Width="100" Text="{Binding VelocidadeEsquerda}"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Height="30">D:</TextBlock>
+                        <TextBox Height="30" Width="100" Text="{Binding VelocidadeDireita}"></TextBox>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </extToolkit:BusyIndicator>
+</Window>

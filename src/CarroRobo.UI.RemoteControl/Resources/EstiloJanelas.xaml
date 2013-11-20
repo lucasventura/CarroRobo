@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+	<Style x:Key="janela-fundo" TargetType="Control">
+		<Setter Property="Background">
+			<Setter.Value>
+				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+					<GradientStop Color="#FFEEEEEE" Offset="0.336" />
+					<GradientStop Color="#FFA5B5C0" Offset="1" />
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="janela-dialogo" TargetType="Window" BasedOn="{StaticResource janela-fundo}">
+        <Setter Property="ResizeMode" Value="NoResize" />
+        <Setter Property="ShowInTaskbar" Value="True" />
+        <Setter Property="WindowStyle" Value="ToolWindow" />
+	</Style>
+    <Style x:Key="janela-dialogo-normal" TargetType="Window" BasedOn="{StaticResource janela-fundo}">
+        <Setter Property="ResizeMode" Value="NoResize" />
+        <Setter Property="ShowInTaskbar" Value="True" />
+	</Style>
+	<Style x:Key="janela-dialogo-resize" TargetType="Window" BasedOn="{StaticResource janela-fundo}">
+        <Setter Property="ResizeMode" Value="CanResize" />
+        <Setter Property="ShowInTaskbar" Value="True" />
+	</Style>
+	<Style x:Key="janela-dialogo-normal-resize" TargetType="Window" BasedOn="{StaticResource janela-fundo}">
+        <Setter Property="ResizeMode" Value="CanResize" />
+        <Setter Property="ShowInTaskbar" Value="True" />
+	</Style>
+    
+	<Style x:Key="titulo-janela" TargetType="TextBlock">
+		<Setter Property="FontSize" Value="20" />
+		<Setter Property="FontWeight" Value="Bold" />
+		<Setter Property="Margin" Value="12" />
+		<Setter Property="Background" Value="{x:Null}" />
+		<Setter Property="Foreground" Value="#FF3400B9" />
+		<Setter Property="FontFamily" Value="Arial" />
+	</Style>
+</ResourceDictionary>

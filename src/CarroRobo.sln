@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarroRobo.TestAPI", "CarroR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarroRobo.MotorTest", "CarroRobo.MotorTest\CarroRobo.MotorTest.csproj", "{8B0B3680-535A-411F-BBD9-1DEB1723BA8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarroRobo.UI.RemoteControl", "CarroRobo.UI.RemoteControl\CarroRobo.UI.RemoteControl.csproj", "{64EBA077-76F8-4941-9967-0B1E080F688B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{8B0B3680-535A-411F-BBD9-1DEB1723BA8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B0B3680-535A-411F-BBD9-1DEB1723BA8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B0B3680-535A-411F-BBD9-1DEB1723BA8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64EBA077-76F8-4941-9967-0B1E080F688B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64EBA077-76F8-4941-9967-0B1E080F688B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64EBA077-76F8-4941-9967-0B1E080F688B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64EBA077-76F8-4941-9967-0B1E080F688B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

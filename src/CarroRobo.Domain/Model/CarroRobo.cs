@@ -43,19 +43,40 @@
 		/// <returns>Resultado da Ação, retorna erro no caso de problemas ao enviar</returns>
 		public ResultadoAcao AtualizarMotores()
 		{
-			var resultado = new ResultadoAcao(ResultadoAcaoEnum.Sucesso, string.Empty);
+			var resultado = VerificaMotores();
 
-			if (Motores == null)
+			if (resultado.Resultado == ResultadoAcaoEnum.Erro)
 			{
-				resultado.Mensagem = "Lista de motores nula, inicialize a lista com os motores.";
-				resultado.Resultado = ResultadoAcaoEnum.Erro;
 				return resultado;
 			}
 
-			if (Motores.Count == 0)
+			foreach (var motor in Motores)
 			{
-				resultado.Mensagem = "Lista de motores vazia, adicione motores na lista com os motores.";
-				resultado.Resultado = ResultadoAcaoEnum.Erro;
+				var codificar = motor.Codificar();
+
+				var resultadoEnviarDados = Comunicacao.EnviarDados(codificar);
+				if (resultadoEnviarDados.Resultado != ResultadoAcaoEnum.Sucesso)
+				{
+					resultado = resultadoEnviarDados;
+					return resultado;
+				}
+
+				resultado.Mensagem += codificar + "enviado.\r\n";
+			}
+
+			return resultado;
+		}
+
+		/// <summary>
+		/// Seta Potencia dos motores para 0 e envia valores da lista de motores <see cref="Motores"/> ao microcontrolador independentemente da forma de comunicação
+		/// </summary>
+		/// <returns>Resultado da Ação, retorna erro no caso de problemas ao enviar</returns>
+		public ResultadoAcao PararMotores()
+		{
+			var resultado = VerificaMotores();
+
+			if (resultado.Resultado == ResultadoAcaoEnum.Erro)
+			{
 				return resultado;
 			}
 
@@ -167,6 +188,27 @@
 			}
 
 			throw new NotImplementedException("Implementar metodo que acende os farois");
+		}
+
+		private ResultadoAcao VerificaMotores()
+		{
+			var resultado = new ResultadoAcao(ResultadoAcaoEnum.Sucesso, string.Empty);
+
+			if (Motores == null)
+			{
+				resultado.Mensagem = "Lista de motores nula, inicialize a lista com os motores.";
+				resultado.Resultado = ResultadoAcaoEnum.Erro;
+				return resultado;
+			}
+
+			if (Motores.Count == 0)
+			{
+				resultado.Mensagem = "Lista de motores vazia, adicione motores na lista com os motores.";
+				resultado.Resultado = ResultadoAcaoEnum.Erro;
+				return resultado;
+			}
+
+			return resultado;
 		}
 
 		private ResultadoAcao VerificaSensoresLed()
