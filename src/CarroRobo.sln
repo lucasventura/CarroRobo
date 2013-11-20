@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Shared", "UI.Shared\UI.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarroRobo.TestAPI", "CarroRobo.TestAPI\CarroRobo.TestAPI.csproj", "{50BD61A4-08DC-40AF-B6F9-B5739C490DDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarroRobo.MotorTest", "CarroRobo.MotorTest\CarroRobo.MotorTest.csproj", "{8B0B3680-535A-411F-BBD9-1DEB1723BA8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{50BD61A4-08DC-40AF-B6F9-B5739C490DDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50BD61A4-08DC-40AF-B6F9-B5739C490DDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50BD61A4-08DC-40AF-B6F9-B5739C490DDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B0B3680-535A-411F-BBD9-1DEB1723BA8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B0B3680-535A-411F-BBD9-1DEB1723BA8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B0B3680-535A-411F-BBD9-1DEB1723BA8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B0B3680-535A-411F-BBD9-1DEB1723BA8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

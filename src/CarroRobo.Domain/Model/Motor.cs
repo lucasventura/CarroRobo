@@ -1,5 +1,6 @@
 ﻿namespace CarroRobo.Domain.Model
 {
+	using System;
 	using System.Globalization;
 	using Enumeradores;
 	using Extensions;
@@ -25,6 +26,14 @@
 		public LadoMotorEnum LadoMotor { get; set; }
 
 		/// <summary>
+		/// Descricao do Motor
+		/// </summary>
+		public string Descricao
+		{
+			get { return Codificar(); }
+		}
+
+		/// <summary>
 		/// Prepara string que será enviada ao microControlador através do <see cref="TipoComunicacaoEnum"/>
 		/// </summary>
 		/// <returns>String com protocolo que será interpretado pelo microcontrolador</returns>
@@ -32,8 +41,9 @@
 		{
 			string ladoMotor = LadoMotor.GetDescription();
 			string localizacaoMotor = LocalizacaoMotor.GetDescription();
-			string sinal = Potencia > 0 ? "+" : "-";
-			return string.Format("{0}{1}{2}{3};", localizacaoMotor, ladoMotor, sinal, Potencia.ToString(CultureInfo.InvariantCulture).PadLeft(3, '0'));
+			string sinal = Potencia >= 0 ? "+" : "-";
+			return string.Format("{0}{1}{2}{3}{4};", "M", localizacaoMotor, ladoMotor, sinal, Math.Abs(Potencia).ToString(CultureInfo.InvariantCulture).PadLeft(3, '0'));
+			//return string.Format("{0}{1}{2}{3}{4}", "M", localizacaoMotor, ladoMotor, sinal, Math.Abs(Potencia).ToString(CultureInfo.InvariantCulture).PadLeft(3, '0'));
 		}
 	}
 }

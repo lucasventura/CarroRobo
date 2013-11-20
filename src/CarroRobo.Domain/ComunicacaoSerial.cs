@@ -50,6 +50,8 @@
 			try
 			{
 				_serialPort.Open();
+
+				_serialPort.WriteBufferSize = 8;
 			}
 			catch (Exception exception)
 			{
