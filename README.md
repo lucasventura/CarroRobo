@@ -6,7 +6,7 @@ Os códigos contidos neste repositório demonstram como utilizar API e como prog
 
 Para os exemplos foram utilizados clientes WPF com aquisição de controles do tipo **DirectInput** e o kit Arduino Mega com microcontrolador ATMEL.
 
-As implementações demonstram controle de direção dos ***`Motores`***, comando para um sensor/atuador, neste caso ***`FarolFrontal`*** e um sensor de distância ***`Ultrassom`*** que envia as distâncias adquiridas pela interface de ***`Comunicação`***.
+As implementações demonstram controle de direção dos ***`Motores`*** , comando para um sensor/atuador, neste caso ***`FarolFrontal`*** e um sensor de distância ***`Ultrassom`*** que envia as distâncias adquiridas pela interface de ***`Comunicação`*** .
 
 
 ----------
