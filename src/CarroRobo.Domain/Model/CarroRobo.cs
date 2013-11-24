@@ -1,7 +1,9 @@
 ﻿namespace CarroRobo.Domain.Model
 {
 	using System;
+	using System.Collections.Concurrent;
 	using System.Collections.Generic;
+	using System.IO.Ports;
 	using System.Linq;
 	using Enumeradores;
 	using Extensions;
@@ -160,8 +162,6 @@
 		/// <returns>Resultado da acao de acender o farol</returns>
 		public ResultadoAcao AcenderFarol()
 		{
-			var resultado = new ResultadoAcao();
-
 			var verificacaoSensoresLed = VerificaSensoresLed();
 
 			if (verificacaoSensoresLed.Resultado == ResultadoAcaoEnum.Erro)
@@ -169,7 +169,7 @@
 				return verificacaoSensoresLed;
 			}
 
-			throw new NotImplementedException("Implementar metodo que acende os farois");
+			return EnviarDadosFarol(true);
 		}
 
 		/// <summary>
@@ -178,8 +178,6 @@
 		/// <returns>Resultado da acao de apagar o farol</returns>
 		public ResultadoAcao ApagarFarol()
 		{
-			var resultado = new ResultadoAcao();
-
 			var verificacaoSensoresLed = VerificaSensoresLed();
 
 			if (verificacaoSensoresLed.Resultado == ResultadoAcaoEnum.Erro)
@@ -187,7 +185,37 @@
 				return verificacaoSensoresLed;
 			}
 
-			throw new NotImplementedException("Implementar metodo que acende os farois");
+			return EnviarDadosFarol(false);
+		}
+
+		private ResultadoAcao EnviarDadosFarol(bool ligar)
+		{
+			ResultadoAcao resultadoEnviaDadosFarol = new ResultadoAcao();
+
+			foreach (var farolFrontal in Sensores.Where(a => a.TipoSensor == TipoSensorEnum.Led).Cast<FarolFrontal>())
+			{
+				if (ligar)
+				{
+					farolFrontal.LigarFarol();
+				}
+				else
+				{
+					farolFrontal.DesligarFarol();
+				}
+
+				var codificar = farolFrontal.Codificar();
+
+				var resultadoEnviarDados = Comunicacao.EnviarDados(codificar);
+				if (resultadoEnviarDados.Resultado != ResultadoAcaoEnum.Sucesso)
+				{
+					resultadoEnviaDadosFarol = resultadoEnviarDados;
+					return resultadoEnviaDadosFarol;
+				}
+
+				resultadoEnviaDadosFarol.Mensagem += codificar + "enviado.\r\n";
+			}
+
+			return resultadoEnviaDadosFarol;
 		}
 
 		private ResultadoAcao VerificaMotores()
@@ -248,6 +276,11 @@
 	public interface IComunicacaoCarroCobo
 	{
 		/// <summary>
+		/// Lista de Dados Recebidos da Comunciacao
+		/// </summary>
+		ConcurrentQueue<String> DadosRecebidos { get; set; }
+
+		/// <summary>
 		/// Enviar comando para o microcontrolador
 		/// </summary>
 		/// <param name="comando">comando para que será implementado no microcrontrolador</param>
@@ -264,7 +297,8 @@
 		/// <summary>
 		/// Recebe Dados do tipo de comunicação
 		/// </summary>
-		/// <returns>Dados retornados</returns>
-		ResultadoAcao<string> ReceberDados();
+		/// <param name="sender">Objeto que chamou o metodo</param>
+		/// <param name="eventArgs">argumentos do evento</param>
+		void ReceberDados(object sender, EventArgs eventArgs);
 	}
 }

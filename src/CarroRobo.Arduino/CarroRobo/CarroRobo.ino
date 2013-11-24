@@ -1,3 +1,5 @@
+#include <NewPing.h>
+
 /* -------------------------Definicao dos Pinos---------------------------- */
 #define RearRightForwardPin 9
 #define RearRightBackwardPin 8
@@ -13,6 +15,20 @@
 #define FrontLeftPotenciaPin 10
 /* ------------------------------------------------------------------------ */
 
+#define LED1Pin 23
+#define LED2Pin 25
+#define LED3Pin 27
+#define LED4Pin 22
+#define LED5Pin 24
+#define LED6Pin 26
+ 
+#define trigPin 29
+#define echoPin 28
+#define MAX_DISTANCE 400
+long distancia = 0;
+int limiteDistancia = 30;
+NewPing sonar(trigPin, echoPin, MAX_DISTANCE);
+ 
 /* ---------------Variaveis que serao enviadas aos pinos------------------- */
 int RearRightForward;
 int RearRightBackward;
@@ -51,29 +67,35 @@ void setup()
 	pinMode(RearLeftPotenciaPin, OUTPUT);
 	pinMode(FrontRightPotenciaPin, OUTPUT);
 	pinMode(FrontLeftPotenciaPin, OUTPUT);
-		
-        // Para os motores ao primeiro momento
-	PararMotores();
-    
+
+	pinMode(LED1Pin, OUTPUT);
+	pinMode(LED2Pin, OUTPUT);
+	pinMode(LED3Pin, OUTPUT);
+	pinMode(LED4Pin, OUTPUT);
+	pinMode(LED5Pin, OUTPUT);
+	pinMode(LED6Pin, OUTPUT);
+
+	pinMode(trigPin, OUTPUT);
+	pinMode(echoPin, INPUT);
+	// Para os motores ao primeiro momento
+	PararMotores();    
 }
 
 void loop()
-{
-//  if (!Serial1.available())
-//  {   
-//    return;   
-//  }
-  
+{       
+    long distanciaTemp = ObterDistancia();  
+    if(distanciaTemp >0)
+    {
+      distancia = distanciaTemp;
+      String str = 
+      Serial1.println(distancia); 
+    }
+   
+    ImprimirVariavelFormatada("distancia: ", distancia); 
+ 
   boolean resultado = LerMensagem();
-//  if(!resultado)
-//  {
-//    Serial1.flush();
-//    Serial1.flush();
-//    ImprimirVariavelFormatada("Serial flushada---- ", ""); 
-//  }
-  
   Serial1.flush();
-  memset(inBuffer, 0, sizeof(BUFFERSIZE));  
+  memset(inBuffer, 0, sizeof(BUFFERSIZE));   
 }
 
 boolean LerMensagem()
@@ -86,7 +108,7 @@ boolean LerMensagem()
   
   //ImprimirVariavelFormatada("result: ", result);
   String str (inBuffer);    
-  ImprimirVariavelFormatada("Buffer: ", str); 
+  // ImprimirVariavelFormatada("Buffer: ", str); 
     
   // mensagem do tipo Motor
   if(str.startsWith("M"))
@@ -95,13 +117,18 @@ boolean LerMensagem()
       String sentidoStr = str.substring(3,4);
       boolean sentido = sentidoStr == "-" ? LOW : HIGH;	 
       int potencia = str.substring(4,7).toInt();	 
-
+      
        /*ImprimirVariavelFormatada("Motor: ", motor);
        ImprimirVariavelFormatada("sentidoStr: ",sentidoStr);
        ImprimirVariavelFormatada("sentido: ",sentido);
        ImprimirVariavelFormatada("sentidoI: ",!sentido);
        ImprimirVariavelFormatada("potencia: ",potencia);*/                
-	 
+      
+      if(distancia > 0 && distancia <= limiteDistancia && sentido == HIGH)
+      {       
+        potencia = 0;          
+      }
+      
       // frontal esquerdo
       if(motor == "FE")
       {        
@@ -142,6 +169,40 @@ boolean LerMensagem()
       return false;
   }
   
+  if(str.startsWith("F"))
+  {
+    String parseFarol = str.substring(0,7);
+    ImprimirVariavelFormatada("Farol", parseFarol);
+    if(parseFarol == "FAROLIG")
+    {
+      digitalWrite( LED1Pin, HIGH );
+      digitalWrite( LED2Pin, HIGH );
+      digitalWrite( LED3Pin, HIGH );
+      digitalWrite( LED4Pin, HIGH );
+      digitalWrite( LED5Pin, HIGH );
+      digitalWrite( LED6Pin, HIGH );
+      return true;
+    }
+    else if (parseFarol == "FARODES")
+    {
+      digitalWrite( LED1Pin, LOW );
+      digitalWrite( LED2Pin, LOW );
+      digitalWrite( LED3Pin, LOW );
+      digitalWrite( LED4Pin, LOW );
+      digitalWrite( LED5Pin, LOW );
+      digitalWrite( LED6Pin, LOW );
+      return true;
+    }
+    
+    return false;    
+  }
+  
+  if(str.substring(0,4) == "DIST")
+  {
+     limiteDistancia = str.substring(4,7).toInt();
+  }      
+ 
+  
   ImprimirVariavelFormatada("Nao e motor", "");
   return false;
 }
@@ -171,6 +232,11 @@ void PararMotores()
 	analogWrite( FrontLeftPotenciaPin, 0 );
 }
 
+long ObterDistancia ()
+{
+  return sonar.ping_cm(); 
+}
+
 void  ImprimirVariavelFormatada (String titulo, String texto)
 {
     Serial.print(titulo);
@@ -189,9 +255,8 @@ void  ImprimirVariavelFormatada  (String titulo, boolean valor)
     Serial.println(valor);
 }
 
-//void  ImprimirVariavelFormatada  (String titulo, byte valor)
-//{
-//    Serial.print(titulo);
-//    Serial.println(valor);
-//}
-
+void  ImprimirVariavelFormatada  (String titulo, long valor)
+{
+    Serial.print(titulo);
+    Serial.println(valor);
+}

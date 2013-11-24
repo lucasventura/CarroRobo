@@ -11,6 +11,7 @@ namespace CarroRobo.UI.RemoteControl.ViewModel
 	using System.Windows.Threading;
 	using Domain;
 	using Domain.Enumeradores;
+	using Domain.Extensions;
 	using Domain.Model;
 	using Microsoft.DirectX.DirectInput;
 	using View;
@@ -66,7 +67,13 @@ namespace CarroRobo.UI.RemoteControl.ViewModel
 			motor4.LocalizacaoMotor = LocalizacaoMotorEnum.Traz;
 			motor4.Potencia = 0;
 
+			FarolFrontal farolFrontal = new FarolFrontal();
+
 			Carro = new CarroRobo();
+
+			Carro.Sensores = new List<SensorBase>();
+			Carro.Sensores.Add(farolFrontal);
+
 			Carro.Motores = new List<Motor>();
 			Carro.Motores.Add(motor1);
 			Carro.Motores.Add(motor2);
@@ -217,13 +224,53 @@ namespace CarroRobo.UI.RemoteControl.ViewModel
 
 			Carro.TipoComunicacao = TipoComunicacaoEnum.Serial;
 			ComunicacaoSerial comunicacaoSerial = new ComunicacaoSerial("COM7", 9600);
-			comunicacaoSerial.AbrirPorta();
+			var result = comunicacaoSerial.AbrirPorta();
+			if (result.Resultado == ResultadoAcaoEnum.Erro)
+			{
+				result = comunicacaoSerial.AbrirPorta();
+			}
 			Carro.Comunicacao = comunicacaoSerial;
 
 			DispatcherTimer dispatcherTimer = new DispatcherTimer();
 			dispatcherTimer.Interval = TimeSpan.FromMilliseconds(150);
 			dispatcherTimer.Tick += ObterStatusDispositivo;
 			dispatcherTimer.Start();
+
+			DispatcherTimer dispatcherTimer2 = new DispatcherTimer();
+			dispatcherTimer2.Interval = TimeSpan.FromMilliseconds(50);
+			dispatcherTimer2.Tick += EscutarMensagens;
+			dispatcherTimer2.Start();
+		}
+
+		private void EscutarMensagens(object sender, EventArgs e)
+		{
+			string dadosNovos;
+			Carro.Comunicacao.DadosRecebidos.TryDequeue(out dadosNovos);
+
+			if (string.IsNullOrEmpty(dadosNovos))
+			{
+				return;
+			}
+
+			dadosNovos = dadosNovos.Replace("\r\n", "");
+
+			try
+			{
+				var i = int.Parse(dadosNovos);
+				if (i < 30)
+				{
+					Carro.AcenderFarol();
+					Thread.Sleep(30);
+					Carro.ApagarFarol();
+					Thread.Sleep(30);
+					Carro.AcenderFarol();
+				}
+			}
+			catch (Exception exp)
+			{
+				Console.WriteLine(exp);
+				throw new Exception(exp.Message);
+			}
 		}
 
 		private bool PodeParar()
@@ -241,7 +288,7 @@ namespace CarroRobo.UI.RemoteControl.ViewModel
 			var helper = new System.Windows.Interop.WindowInteropHelper(_view);
 
 			_dispositivo = new Device(DispositivoSelecionado.Guid);
-
+			
 			if (_dispositivo.DeviceInformation.InstanceName.Contains("XBOX"))
 			{
 				_controleXbox = true;
@@ -276,6 +323,8 @@ namespace CarroRobo.UI.RemoteControl.ViewModel
 
 			_dispositivo.Properties.AxisModeAbsolute = true;
 
+			EffectList effects = _dispositivo.GetEffects(EffectType.All);
+
 			// _dispositivo.SetCooperativeLevel(helper.Handle, CooperativeLevelFlags.NonExclusive | CooperativeLevelFlags.Background);
 
 			_dispositivo.SetDataFormat(DeviceDataFormat.Joystick);
@@ -295,6 +344,13 @@ namespace CarroRobo.UI.RemoteControl.ViewModel
 
 		private void EnviarDados()
 		{
+			var botaoApertado = VerificaBotao();
+
+			if (botaoApertado.Resultado != ResultadoAcaoEnum.Sucesso)
+			{
+				throw new Exception("Erro ao verificar botoes pressionados.. " + botaoApertado.Mensagem);
+			}
+
 			bool freioAtivo = VerificaFreioAtivo();
 
 			int frente = ObterVelocidadeFrente();
@@ -332,7 +388,7 @@ namespace CarroRobo.UI.RemoteControl.ViewModel
 			foreach (var motorDireita in Carro.Motores)
 			{
 				motorDireita.Potencia = motorDireita.LadoMotor == LadoMotorEnum.Direita
-											? veloRodaDireita 
+											? veloRodaDireita
 											: veloRodaEsquerda;
 			}
 
@@ -343,6 +399,33 @@ namespace CarroRobo.UI.RemoteControl.ViewModel
 			}
 		}
 
+		private ResultadoAcao VerificaBotao()
+		{
+			ResultadoAcao result = new ResultadoAcao();
+
+			byte[] buttons = State.GetButtons();
+
+			if (!buttons.Any(a => a == 128))
+			{
+				result.Mensagem = "Nenhum botão pressionado";
+				return result;
+			}
+
+			// botao A do controle do Xbox
+			if (buttons[0] == 128)
+			{
+				result = Carro.AcenderFarol();
+			}
+
+			// botao B do controle do Xbox
+			if (buttons[1] == 128)
+			{
+				result = Carro.ApagarFarol();
+			}
+
+			return result;
+		}
+
 		private int ObterVelocidadeTraz()
 		{
 			if (_controleXbox)
@@ -350,7 +433,7 @@ namespace CarroRobo.UI.RemoteControl.ViewModel
 				return State.Z;
 			}
 
-			return State.Rz == 0 ? 1 : 255 - State.Rz;
+			return 255 - State.Rz; ;
 		}
 
 		private int ObterVelocidadeFrente()
