@@ -30,5 +30,10 @@
 		/// Numero do sensor de ultrassom
 		/// </summary>
 		public int NumeroSensor { get; set; }
+		
+		/// <summary>
+		/// Distancia enviada pelo sensor
+		/// </summary>
+		public int Distancia { get; set; }
 	}
 }

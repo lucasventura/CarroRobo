@@ -12,58 +12,47 @@
 	{
 		static void Main(string[] args)
 		{
-			var carro = new CarroRobo();
-			carro.TipoComunicacao = TipoComunicacaoEnum.Serial;
-
-			var portas = ComunicacaoSerial.Portas;
+			// Configura forma de comunicação
 			ComunicacaoSerial comunicacaoSerial = new ComunicacaoSerial("COM7", 9600);
 			comunicacaoSerial.AbrirPorta();
-			carro.Comunicacao = comunicacaoSerial;
 
+			// Instancia o carro definindo forma de comunicação
+			// e inicializando listas
+			var carro = new CarroRobo();
+			carro.TipoComunicacao = TipoComunicacaoEnum.Serial;
+			carro.Comunicacao = comunicacaoSerial;
+			carro.Motores = new List<Motor>();
+			carro.Sensores = new List<SensorBase>();
+			
+			//Configura os 4 motores e adiciona a lista de motores
 			Motor motor1 = new Motor();
 			motor1.LadoMotor = LadoMotorEnum.Esquerda;
 			motor1.LocalizacaoMotor = LocalizacaoMotorEnum.Frente;
-			motor1.Potencia = 100;
-			//motor1.Potencia = 255;
-			//motor1.Potencia = -255;
-
+			motor1.Potencia = 0;
 			Motor motor2 = new Motor();
 			motor2.LadoMotor = LadoMotorEnum.Direita;
 			motor2.LocalizacaoMotor = LocalizacaoMotorEnum.Frente;
 			motor2.Potencia = 0;
-			motor2.Potencia = 255;
-			//motor2.Potencia = -255;
-			
 			Motor motor3 = new Motor();
 			motor3.LadoMotor = LadoMotorEnum.Esquerda;
 			motor3.LocalizacaoMotor = LocalizacaoMotorEnum.Traz;
-			motor3.Potencia = -1;
-			//motor3.Potencia = 255;
-			//motor3.Potencia = -255;
-
+			motor3.Potencia = 0;
 			Motor motor4 = new Motor();
 			motor4.LadoMotor = LadoMotorEnum.Direita;
 			motor4.LocalizacaoMotor = LocalizacaoMotorEnum.Traz;
-			motor4.Potencia = -1;
-			//motor4.Potencia = 255;
-			//motor4.Potencia = -255;
+			motor4.Potencia = 0;
 
-			//var test = motor1.Codificar();
-			//Console.WriteLine(test);
-
-			carro.Motores = new List<Motor>();
 			carro.Motores.Add(motor1);
 			carro.Motores.Add(motor2);
 			carro.Motores.Add(motor3);
 			carro.Motores.Add(motor4);
 
+			//Configura os 2 sensores e adiciona a lista de sensores base
 			Ultrassom ultrassom = new Ultrassom();
 			ultrassom.Nome = "ULTRASSOM";
-
 			FarolFrontal farolFrontal = new FarolFrontal();
 			farolFrontal.Nome = "Farol";
 
-			carro.Sensores = new List<SensorBase>();
 			carro.Sensores.Add(ultrassom);
 			carro.Sensores.Add(farolFrontal);
 

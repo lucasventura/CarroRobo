@@ -21,7 +21,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Button Width="300" Height="30" Command="{Binding EnviarTodasPotenciasCommand}">Enviar Todos</Button>
-        <Button Width="300" Height="30" Command="{Binding PararMotoresCommand}">Parar Motores</Button>
+        <Button Width="200" Height="30" Command="{Binding EnviarTodasPotenciasCommand}">Enviar Todos</Button>
+        <Button Width="200" Height="30" Command="{Binding PararMotoresCommand}">Parar Motores</Button>
     </StackPanel>
 </Window>
